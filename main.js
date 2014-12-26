@@ -147,43 +147,37 @@ function playMidi(m) {
 
 function init() {
 	for (var i in instruments) {
-		addOption("instrument", i);
+		addOption($("#instrument"), i);
 	}
 	for (var i in keys) {
-		addOption("key", i);
+		addOption($("#key"), i);
 	}
 	for (var i in notes) {
-		addOption("keynote", i, notes[i]);
-		addOption("note", i, notes[i]);
+		addOption($("#keynote"), i, notes[i]);
+		addOption($("#note"), i, notes[i]);
 	}
 	for (var i in chords) {
-		addOption("chord", i);
+		addOption($("#chord"), i);
 	}
 
 	refresh();
-
-	// playMidi(69);
-
-
 }
 
-function addOption(selectId, key, label) {
-	var s = document.getElementById(selectId);
-	var o = document.createElement("option");
-	o.setAttribute("value", key);
-	var ot = document.createTextNode(label != undefined ? label : key);
-	o.appendChild(ot);
-	s.appendChild(o);
+function addOption(select, key, label) {
+	var o = $("<option />");
+	o.text(label != undefined ? label : key);
+	o.attr("value", key);
+	o.appendTo(select);
 }
 
 function refresh() {
-	var instrument = document.getElementById("instrument").value;
+	var instrument = $("#instrument").val();
 
-	var key = document.getElementById("key").value;
-	var keynote = parseInt(document.getElementById("keynote").value);
+	var key = $("#key").val();
+	var keynote = parseInt($("#keynote").val());
 
-	var note = document.getElementById("note").value;
-	var chord = document.getElementById("chord").value;
+	var note = $("#note").val();
+	var chord = $("#chord").val();
 
 	printKey(instrument, key, keynote);
 	printChord(instrument, note, chord);
