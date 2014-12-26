@@ -49,7 +49,7 @@ var chords = {
 
 var audio;
 
-function printFretboard(instrument, checkNote, checkKeynote, outputId) {
+function printFretboard(instrument, checkNote, checkKeynote, output) {
 	var html = "<table>";
 	var strings = instruments[instrument];
 	html += "<tr class=\"hint\">"
@@ -71,7 +71,7 @@ function printFretboard(instrument, checkNote, checkKeynote, outputId) {
 		html += "</tr>"
 	}
 	html += "</table>";
-	document.getElementById(outputId).innerHTML = html;
+	output.html(html);
 }
 
 function printKey(instrument, key, keynote) {
@@ -83,7 +83,7 @@ function printKey(instrument, key, keynote) {
 		function(n) {
 			return (n - keynote) == 0;
 		},
-		"keysOut"
+		$("#keysOut")
 	);
 }
 
@@ -96,11 +96,11 @@ function printChord(instrument, note, chord) {
 		function(n) {
 			return (n - note + 12) % 12 == 0;
 		},
-		"chordsOut"
+		$("#chordsOut")
 	);
 }
 
-function printSteps(steps, note, outputId) {
+function printSteps(steps, note, output) {
 	var prev = null;
 	var html = "";
 	for (i in steps) {
@@ -112,7 +112,7 @@ function printSteps(steps, note, outputId) {
 		html += "<span class=\"stepnote\">" + notes[(note + k) % 12] + "</span>"
 		prev = k;
 	}
-	document.getElementById(outputId).innerHTML = html;
+	output.html(html);
 }
 
 function midiToFrequency(m) {
@@ -187,7 +187,7 @@ function refresh() {
 
 	printKey(instrument, key, keynote);
 	printChord(instrument, note, chord);
-	printSteps(keys[key], keynote, "steps");
-	printSteps(chords[chord], note, "chordsteps");
+	printSteps(keys[key], keynote, $("#steps"));
+	printSteps(chords[chord], note, $("#chordsteps"));
 }
 
