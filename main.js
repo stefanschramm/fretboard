@@ -64,7 +64,7 @@ function printFretboard(instrument, checkNote, checkKeynote, output) {
 			var tone = strings[s] + i;
 			var note = tone % 12;
 			if (checkNote(note)) {
-				html += "<span onclick=\"playMidi(" + tone + ");\" class=\"note" + (checkKeynote(note) ? " keynote" : "") + "\">" + notes[note] + "</span>";
+				html += "<span onclick=\"playMidi([" + tone + "]);\" class=\"note" + (checkKeynote(note) ? " keynote" : "") + "\">" + notes[note] + "</span>";
 			}
 			html += "</td>"
 		}
@@ -120,20 +120,33 @@ function midiToFrequency(m) {
 }
 
 function playMidi(m) {
-	var f = midiToFrequency(m);
-	console.log("MIDI: " + m + ", Frequency: " + f + " Hz");
+	for (i in m) {
+		var f = midiToFrequency(m[i]);
+		console.log("MIDI: " + m[i] + ", Frequency: " + f + " Hz");
+		m[i] = f;
+	}
 	var wave = new RIFFWAVE();
 	wave.header.sampleRate = 44100;
-	var length = 1; // s
+	var length = 0.8; // s
 	var data = [];
 	var samples = wave.header.sampleRate * length;
-	var center = samples/2;
+	var attackEnd = samples/6;
+	var releaseBegin = 5 * samples/6;
 	var a = 0; // amplitude (0...127)
 	for (var i = 0; i < samples; i ++) {
-		// orig:
-		// data[i] = Math.round(128 + 127 * Math.sin(i * 2 * Math.PI * f / wave.header.sampleRate));
-		a = 127 * (center - Math.abs(i - center)) / (center);
-		data[i] = Math.round(128 + a * Math.sin(i * 2 * Math.PI * f / wave.header.sampleRate));
+		if (i < attackEnd) {
+			a = 127 * (i / attackEnd);
+		}
+		else if (i > releaseBegin) {
+			a = 127 * ((samples - i) / (samples - releaseBegin))
+		}
+		else {
+			a = 127;
+		}
+		data[i] = 128;
+		for (j in m) {
+			data[i] += Math.round((a / m.length) * Math.sin(i * 2 * Math.PI * m[j] / wave.header.sampleRate));
+		}
 	}
 	wave.Make(data);
 	if (audio != undefined && ! audio.paused) {
@@ -142,7 +155,6 @@ function playMidi(m) {
 	}
 	audio = new Audio(wave.dataURI);
 	audio.play();
-
 }
 
 function init() {
