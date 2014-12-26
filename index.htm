@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>Keys and Chords</title>
+		<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+		<script src="riffwave.js"></script>
+		<script src="main.js"></script>
+	</head>
+	<body>
+
+		<label for="instrument">Instrument:</label>
+		<select id="instrument" onchange="refresh();"></select>
+
+		<h2>Keys</h2>
+		<label for="key">Key:</label>
+		<select id="key" onchange="refresh();"></select>
+		<label for="keynote">Keynote:</label>
+		<select id="keynote" onchange="refresh();"></select>
+		<div id="keysOut"></div>
+
+		<h2>Chords</h2>
+		<label for="chord">Chord:</label>
+		<select id="chord" onchange="refresh();"></select>
+		<label for="note">Note:</label>
+		<select id="note" onchange="refresh();"></select>
+		<div id="chordsOut"></div>
+
+		<script type="text/javascript">init();</script>
+
+	</body>
+</html>

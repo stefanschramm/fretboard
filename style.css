@@ -1,0 +1,55 @@
+body {
+	font-family: sans-serif;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+td {
+	margin: 0;
+	width: 40px;
+	height: 25px;
+	text-align: center;
+	border-right: 1px solid #eee;
+}
+
+tr.hint {
+	color: #999;
+	border: none;
+	background-color: none;
+}
+
+tr.hint td {
+	border-right: none;
+}
+
+td.fret0 {
+	width: 20px;
+}
+
+tr.string td.fret {
+	background-image: url(fret.png);
+	cursor: pointer;
+}
+
+tr.string td.fret0 {
+	background-color: #ca6;
+	background-image: none;
+	cursor: pointer;
+}
+
+tr.string td.fret0 span.note {
+	background: none;
+}
+
+td.fret span.note {
+	background-color: #fff;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+span.keynote {
+	font-weight: bold;
+}
+
