@@ -18,7 +18,11 @@ var keys = {
 	"lydisch": [0,2,4,6,7,9,11,12],
 	"mixolydisch": [0,2,4,5,7,9,10,12],
 	"lokrisch": [0,1,3,5,6,8,10,12],
-	"phrygisch-dominant": [0,1,4,5,7,8,10,12]
+	"phrygisch-dominant": [0,1,4,5,7,8,10,12],
+	"chromatisch": [0,1,2,3,4,5,6,7,8,9,10,11,12],
+	"pentatonisch dur": [0,2,4,7,9,12],
+	"pentatonisch moll": [0,3,5,7,10,12],
+	"alteriert": [0,1,3,4,6,8,10,12]
 }
 
 // offsets of strings of instruments
@@ -37,7 +41,7 @@ var chords = {
 	"dur7major": [0,4,7,11],
 	"moll": [0,3,7],
 	"moll7": [0,3,7,10],
-	"moll7major": [0,3,7,10]
+	// "maj9": [0,4,7,9,14], // TODO: > 12
 }
 
 // TODO:
@@ -94,6 +98,21 @@ function printChord(instrument, note, chord) {
 		},
 		"chordsOut"
 	);
+}
+
+function printSteps(steps, note, outputId) {
+	var prev = null;
+	var html = "";
+	for (i in steps) {
+		var k = steps[i];
+		if (prev != null) {
+			var s = k - prev;
+			html += "<span class=\"step step" +  s + "\">" + s + "/2</span>"
+		}
+		html += "<span class=\"stepnote\">" + notes[(note + k) % 12] + "</span>"
+		prev = k;
+	}
+	document.getElementById(outputId).innerHTML = html;
 }
 
 function midiToFrequency(m) {
@@ -168,5 +187,7 @@ function refresh() {
 
 	printKey(instrument, key, keynote);
 	printChord(instrument, note, chord);
+	printSteps(keys[key], keynote, "steps");
+	printSteps(chords[chord], note, "chordsteps");
 }
 

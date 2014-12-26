@@ -53,3 +53,39 @@ span.keynote {
 	font-weight: bold;
 }
 
+span.steps span.stepnote {
+	display: inline-block;
+	text-align: center;
+	width: 20px;
+}
+
+span.steps span.step {
+	display: inline-block;
+	text-align: center;
+	margin: 3px;
+	background-color: #eee;
+	padding: 2px;
+	font-size: small;
+}
+
+span.steps span.step1 {
+	width: 40px;
+}
+
+span.steps span.step2 {
+	width: 80px;
+}
+
+span.steps span.step3 {
+	width: 120px;
+}
+
+span.steps span.step4 {
+	width: 160px;
+}
+
+span.steps span.step5 {
+	width: 200px;
+}
+
+
