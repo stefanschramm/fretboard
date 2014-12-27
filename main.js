@@ -47,6 +47,8 @@ var chords = {
 // TODO:
 // M, 7, maj7, 6, m, m7, m/maj7, m6, sus2, sus4, 7sus2, 7sus4, dim, dim7, aug, 5
 
+var playOffset = 60;
+
 var audio;
 
 function printFretboard(instrument, checkNote, checkKeynote, output) {
@@ -64,7 +66,7 @@ function printFretboard(instrument, checkNote, checkKeynote, output) {
 			var tone = strings[s] + i;
 			var note = tone % 12;
 			if (checkNote(note)) {
-				html += "<span onclick=\"playMidi([" + tone + "]);\" class=\"note" + (checkKeynote(note) ? " keynote" : "") + "\">" + notes[note] + "</span>";
+				html += "<span onclick=\"playMidi([[" + tone + "]]);\" class=\"note" + (checkKeynote(note) ? " keynote" : "") + "\">" + notes[note] + "</span>";
 			}
 			html += "</td>"
 		}
@@ -85,6 +87,14 @@ function printKey(instrument, key, keynote) {
 		},
 		$("#keysOut")
 	);
+	$('#playkey').click(function() {
+		var tones = [];
+		for (var i in keys[key]) {
+			tones.push([playOffset + keynote + keys[key][i]]); // TODO: offset definition
+		}
+		playMidi(tones)
+		return false;
+	});
 }
 
 function printChord(instrument, note, chord) {
@@ -98,6 +108,22 @@ function printChord(instrument, note, chord) {
 		},
 		$("#chordsOut")
 	);
+	$('#playchord').click(function() {
+		var tones = [];
+		for (var i in chords[chord]) {
+			tones.push([playOffset + note + chords[chord][i]]); // TODO: offset definition
+		}
+		playMidi([tones]);
+		return false;
+	});
+	$('#playchordsequential').click(function() {
+		var tones = [];
+		for (var i in chords[chord]) {
+			tones.push([[playOffset + note + chords[chord][i]]]); // TODO: offset definition
+		}
+		playMidi(tones);
+		return false;
+	});
 }
 
 function printSteps(steps, note, output) {
@@ -119,35 +145,47 @@ function midiToFrequency(m) {
 	return Math.pow(2, ((m-69)/12.0))*440;
 }
 
-function playMidi(m) {
-	for (i in m) {
-		var f = midiToFrequency(m[i]);
-		console.log("MIDI: " + m[i] + ", Frequency: " + f + " Hz");
-		m[i] = f;
-	}
+function playMidi(tones) {
+
 	var wave = new RIFFWAVE();
 	wave.header.sampleRate = 44100;
-	var length = 0.8; // s
+	var length = 0.8; // s (length of one tone)
+
 	var data = [];
-	var samples = wave.header.sampleRate * length;
-	var attackEnd = samples/6;
-	var releaseBegin = 5 * samples/6;
-	var a = 0; // amplitude (0...127)
-	for (var i = 0; i < samples; i ++) {
-		if (i < attackEnd) {
-			a = 127 * (i / attackEnd);
+
+	for (t in tones) {
+		var m = tones[t];
+
+		// convert midi numbers to frequencies
+		for (i in m) {
+			var f = midiToFrequency(m[i]);
+			console.log("MIDI: " + m[i] + ", Frequency: " + f + " Hz");
+			m[i] = f;
 		}
-		else if (i > releaseBegin) {
-			a = 127 * ((samples - i) / (samples - releaseBegin))
+
+		var samples = wave.header.sampleRate * length;
+		var attackEnd = samples/6;
+		var releaseBegin = 5 * samples/6;
+		var a = 0; // amplitude (0...127)
+		for (var i = 0; i < samples; i++) {
+			if (i < attackEnd) {
+				a = 127 * (i / attackEnd);
+			}
+			else if (i > releaseBegin) {
+				a = 127 * ((samples - i) / (samples - releaseBegin))
+			}
+			else {
+				a = 127;
+			}
+			var sample = 128;
+			for (j in m) {
+				sample += Math.round((a / m.length) * Math.sin(i * 2 * Math.PI * m[j] / wave.header.sampleRate));
+			}
+			data.push(sample);
 		}
-		else {
-			a = 127;
-		}
-		data[i] = 128;
-		for (j in m) {
-			data[i] += Math.round((a / m.length) * Math.sin(i * 2 * Math.PI * m[j] / wave.header.sampleRate));
-		}
+
 	}
+
 	wave.Make(data);
 	if (audio != undefined && ! audio.paused) {
 	    audio.pause();
@@ -188,7 +226,7 @@ function refresh() {
 	var key = $("#key").val();
 	var keynote = parseInt($("#keynote").val());
 
-	var note = $("#note").val();
+	var note = parseInt($("#note").val());
 	var chord = $("#chord").val();
 
 	printKey(instrument, key, keynote);

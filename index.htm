@@ -14,35 +14,65 @@
 	</head>
 	<body>
 		<div class="container">
-			<div class="row">
-				<div class="col-4">
+			<form class="form-horizontal">
+				<div class="row">
 					<h1><a href="http://fretboard.kesto.de/">Virtual Fretboard</a></h1>
-					<label for="instrument">Instrument:</label>
-					<select id="instrument" onchange="refresh();"></select>
+					<div class="form-group">
+						<label for="instrument" class="control-label col-xs-1">Instrument:</label>
+						<div class="col-xs-4">
+							<select id="instrument" class="form-control col-xs-4" onchange="refresh();"></select>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<h2>Keys</h2>
-				<label for="key">Key:</label>
-				<select id="key" onchange="refresh();"></select>
-				<label for="keynote">Keynote:</label>
-				<select id="keynote" onchange="refresh();"></select>
-			</div>
-			<div class="row">
-				<strong>Steps:</strong> <span id="steps" class="steps"></span>
-			</div>
-			<div class="row">
-				<div id="keysOut"></div>
-			</div>
-			<div class="row">
-				<h2>Chords</h2>
-				<label for="chord">Chord:</label>
-				<select id="chord" onchange="refresh();"></select>
-				<label for="note">Note:</label>
-				<select id="note" onchange="refresh();"></select>
-				<span id="chordsteps" class="steps"></span>
-				<div id="chordsOut"></div>
-			</div>
+				<div class="row">
+					<h2>Keys</h2>
+					<div class="form-group">
+						<label for="key" class="control-label col-xs-1">Key:</label>
+						<div class="col-xs-3">
+							<select id="key" class="form-control" onchange="refresh();"></select>
+						</div>
+						<label for="keynote" class="control-label col-xs-1">Keynote:</label>
+						<div class="col-xs-1">
+							<select id="keynote" class="form-control" onchange="refresh();"></select>
+						</div>
+						<div class="col-xs-1">
+							<button id="playkey" class="btn">Play</button>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-1">
+						<strong>Steps:</strong>
+					</div>
+					<div class="col-xs-10">
+						<span id="steps" class="steps"></span>
+					</div>
+				</div>
+				<div class="row">
+					<div id="keysOut"></div>
+				</div>
+				<div class="row">
+					<h2>Chords</h2>
+					<div class="form-group">
+						<label for="chord" class="control-label col-xs-1">Chord:</label>
+						<div class="col-xs-3">
+							<select id="chord" class="form-control" onchange="refresh();"></select>
+						</div>
+						<label for="note" class="control-label col-xs-1">Note:</label>
+						<div class="col-xs-1">
+							<select id="note" class="form-control" onchange="refresh();"></select>
+						</div>
+						<div class="col-xs-1">
+							<button id="playchord" class="btn">Play</button>
+						</div>
+						<div class="col-xs-1">
+							<button id="playchordsequential" class="btn">Play sequential</button>
+						</div>
+					</div>
+					<span id="chordsteps" class="steps"></span>
+					<div id="chordsOut"></div>
+				</div>
+			</form>
 		</div>
 
 		<script type="text/javascript">init();</script>
