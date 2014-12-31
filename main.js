@@ -8,11 +8,11 @@ var maxFrets = 22;
 // offsets of notes in key
 var keys = {
 	"dur (ionisch)": [0,2,4,5,7,9,11,12],
-	"moll_natuerlich (aeolisch)": [0,2,3,5,7,8,10,12],
-	"moll_harmonisch": [0,2,3,5,7,8,11,12],
-	"moll_melodisch": [0,2,3,5,7,9,11,12],
-	"zigeuner_moll": [0,2,3,6,7,8,11,12],
-	"zigeuner_dur": [0,1,4,5,7,8,11,12],
+	"moll natuerlich (aeolisch)": [0,2,3,5,7,8,10,12],
+	"moll harmonisch": [0,2,3,5,7,8,11,12],
+	"moll melodisch": [0,2,3,5,7,9,11,12],
+	"zigeuner moll": [0,2,3,6,7,8,11,12],
+	"zigeuner dur": [0,1,4,5,7,8,11,12],
 	"dorisch": [0,2,3,5,7,9,10,12],
 	"phrygisch": [0,1,3,5,7,8,10,12],
 	"lydisch": [0,2,4,6,7,9,11,12],
@@ -22,7 +22,8 @@ var keys = {
 	"chromatisch": [0,1,2,3,4,5,6,7,8,9,10,11,12],
 	"pentatonisch dur": [0,2,4,7,9,12],
 	"pentatonisch moll": [0,3,5,7,10,12],
-	"alteriert": [0,1,3,4,6,8,10,12]
+	"alteriert": [0,1,3,4,6,8,10,12],
+	"blues (Kai)": [0,2,3,5,6,7,10,12]
 }
 
 // offsets of strings of instruments
