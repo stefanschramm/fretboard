@@ -96,6 +96,14 @@ function printKey(instrument, key, keynote) {
 		playMidi(tones)
 		return false;
 	});
+	$('#playkeyreverse').click(function() {
+		var tones = [];
+		for (var i = keys[key].length - 1; i >= 0; i--) {
+			tones.push([playOffset + keynote + keys[key][i]]); // TODO: offset definition
+		}
+		playMidi(tones)
+		return false;
+	});
 }
 
 function printChord(instrument, note, chord) {
